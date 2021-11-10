@@ -1,7 +1,6 @@
 package net.wissmueller.kafkatutorial.producer;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,15 +13,13 @@ import org.springframework.stereotype.Component;
 public class KafkaProducer {
   private static final Logger log = LoggerFactory.getLogger(KafkaProducer.class);
 
-  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
   @Autowired
   private KafkaTemplate<String, TimestampEvent> kafkaTemplate;
 
   @Scheduled(fixedRate = 5000)
   public void reportCurrentTime() {
-    var event = new TimestampEvent(dateFormat.format(new Date()));
+    var event = new TimestampEvent(ZonedDateTime.now());
     kafkaTemplate.send("timestamp", event);
-    log.info("Sent: {}", event.getTimestamp());
+    log.info("Sent: {}", event.getTimestamp().toString());
   }
 }

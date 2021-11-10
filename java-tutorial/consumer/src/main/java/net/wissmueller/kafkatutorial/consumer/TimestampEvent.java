@@ -1,19 +1,18 @@
 package net.wissmueller.kafkatutorial.consumer;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.ZonedDateTime;
 
 public class TimestampEvent {
-  private String timestamp;
+  private ZonedDateTime timestamp;
 
   public TimestampEvent() {
-
   }
 
-  public String getTimestamp() {
+  public ZonedDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(String timestamp) {
+  public void setTimestamp(ZonedDateTime timestamp) {
     this.timestamp = timestamp;
   }
 }

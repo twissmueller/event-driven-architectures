@@ -1,17 +1,19 @@
 package net.wissmueller.kafkatutorial.producer;
 
-public class TimestampEvent {
-  private String timestamp;
+import java.time.ZonedDateTime;
 
-  public TimestampEvent(String timestamp) {
+public class TimestampEvent {
+  private ZonedDateTime timestamp;
+
+  public TimestampEvent(ZonedDateTime timestamp) {
     this.timestamp = timestamp;
   }
 
-  public String getTimestamp() {
+  public ZonedDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(String timestamp) {
+  public void setTimestamp(ZonedDateTime timestamp) {
     this.timestamp = timestamp;
   }
 }

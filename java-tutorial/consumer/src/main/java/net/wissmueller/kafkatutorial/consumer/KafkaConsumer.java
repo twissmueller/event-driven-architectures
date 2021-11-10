@@ -11,6 +11,7 @@ public class KafkaConsumer {
 
   @KafkaListener(topics = "timestamp", containerFactory = "kafkaListenerContainerFactory")
   void listener(TimestampEvent event) {
-    log.info("Received: {}", event.getTimestamp());
+    log.info("Received: {}", event.getTimestamp()
+                                  .toString());
   }
 }
