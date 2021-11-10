@@ -5,7 +5,6 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -16,13 +15,20 @@ public class KafkaProducer {
 
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-  @Autowired
-  private KafkaTemplate<String, TimestampEvent> kafkaTemplate;
+  private KafkaTemplate<String, String> kafkaTemplate;
+
+  KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
+    this.kafkaTemplate = kafkaTemplate;
+  }
+
+  void sendMessage(String message, String topicName) {
+    kafkaTemplate.send(topicName, message);
+  }
 
   @Scheduled(fixedRate = 5000)
   public void reportCurrentTime() {
-    var event = new TimestampEvent(dateFormat.format(new Date()));
-    kafkaTemplate.send("timestamp", event);
-    log.info("Sent: {}", event.getTimestamp());
+    String timestamp = dateFormat.format(new Date());
+    sendMessage(timestamp, "timestamp");
+    log.info("Sent: {}", timestamp);
   }
 }
