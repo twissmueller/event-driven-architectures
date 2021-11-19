@@ -5,8 +5,7 @@ import java.time.ZonedDateTime;
 public class TimestampEvent {
   private ZonedDateTime timestamp;
 
-  public TimestampEvent() {
-  }
+  public TimestampEvent() {}
 
   public ZonedDateTime getTimestamp() {
     return timestamp;

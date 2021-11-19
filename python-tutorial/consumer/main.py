@@ -1,8 +1,11 @@
 from kafka import KafkaConsumer
-from json import loads
+import json
+
+from TimestampEvent import TimestampEvent
 
 consumer = KafkaConsumer('timestamp',
-                         value_deserializer=lambda x: loads(x.decode('utf-8')))
+                         value_deserializer=lambda x: json.loads(x.decode('utf-8')))
 
 for message in consumer:
-    print(message.value)
+    timestampEvent = TimestampEvent(**(message.value))
+    print(timestampEvent.timestamp)
