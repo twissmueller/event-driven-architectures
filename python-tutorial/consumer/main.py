@@ -8,4 +8,4 @@ consumer = KafkaConsumer('timestamp',
 
 for message in consumer:
     timestampEvent = TimestampEvent(**(message.value))
-    print(timestampEvent.timestamp)
+    print("Received: " + timestampEvent.timestamp)
