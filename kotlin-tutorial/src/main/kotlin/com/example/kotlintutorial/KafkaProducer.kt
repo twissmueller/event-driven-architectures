@@ -10,9 +10,9 @@ class KafkaProducer(private val kafkaTemplate: KafkaTemplate<String, TimestampEv
 
     @Scheduled(fixedRate = 5000)
     fun send() {
-        val timestamp = TimestampEvent(timestamp = ZonedDateTime.now())
-        kafkaTemplate.send("tutorial-topic", timestamp)
-        println("Sent: ${timestamp.toString()}")
+        val event = TimestampEvent(timestamp = ZonedDateTime.now())
+        kafkaTemplate.send("tutorial-topic", event)
+        println("Sent: ${event.timestamp.toString()}")
     }
 
 }

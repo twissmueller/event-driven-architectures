@@ -8,7 +8,7 @@ class KafkaConsumer {
 
     @KafkaListener(topics = ["tutorial-topic"])
     fun processMessage(event: TimestampEvent) {
-        println(event.timestamp.toString())
+        println("Received: ${event.timestamp.toString()}")
     }
 
 }
