@@ -5,8 +5,7 @@ from time import sleep
 
 from TimestampEvent import TimestampEvent
 
-producer = KafkaProducer(bootstrap_servers='localhost:9092',
-                         value_serializer=lambda x: json.dumps(x.__dict__).encode('utf-8'))
+producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda x: json.dumps(x.__dict__).encode('utf-8'))
 
 while True:
     timestampEvent = TimestampEvent(datetime.now().strftime("%H:%M:%S"))
