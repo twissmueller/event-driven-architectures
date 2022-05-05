@@ -7,6 +7,8 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
+    networks:
+      - tutorial
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: >-
@@ -24,44 +26,56 @@ services:
 
   zookeeper:
     image: zookeeper
+    container_name: zookeeper
     ports:
       - "2181:2181"
+    networks:
+      - tutorial
     environment:
       - KAFKA_ADVERTISED_HOST_NAME=zookeeper
 
-  mariadb:
-    image: mariadb:latest
-    container_name: mariadb
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    command:
+      --server-id=12345
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+      --binlog-row-image=full
+    networks:
+      - tutorial
     environment:
-      MARIADB_DATABASE: testdb
-      MARIADB_USER: foo
-      MARIADB_PASSWORD: bar
-      MARIADB_ROOT_PASSWORD: foobar
+      #MARIADB_DATABASE: testdb
+      MYSQL_USER: foo
+      MYSQL_PASSWORD: bar
+      MYSQL_ROOT_PASSWORD: foobar
     volumes:
       - db_data:/var/lib/mysql
     
-  adminer:
-    image: adminer
-    container_name: adminer
-    environment:
-      ADMINER_DEFAULT_SERVER: mariadb
-    ports:
-      - 8080:8080
-
   connect:
     image: quay.io/debezium/connect:1.9
     container_name: connect
     ports:
       - "8083:8083"
+    networks:
+      - tutorial
     environment:
-      BOOTSTRAP_SERVERS: kafka:19092
-      GROUP_ID: 1
-      CONFIG_STORAGE_TOPIC: my_connect_configs
-      OFFSET_STORAGE_TOPIC: my_connect_offsets
-      STATUS_STORAGE_TOPIC: my_connect_statuses
-    depends_on:
-      - kafka
+      BOOTSTRAP_SERVERS: 
+      
+      CONNECT_SECURITY_PROTOCOL: SASL_SSL
+      CONNECT_SASL_MECHANISM: SCRAM-SHA-256
+      CONNECT_SASL_JAAS_CONFIG: 
 
+      CONNECT_PRODUCER_SECURITY_PROTOCOL: SASL_SSL
+      CONNECT_PRODUCER_SASL_MECHANISM: SCRAM-SHA-256
+      CONNECT_PRODUCER_SASL_JAAS_CONFIG: 
+
+      CONFIG_STORAGE_TOPIC: connect-configs
+      OFFSET_STORAGE_TOPIC: connect-offsets
+      STATUS_STORAGE_TOPIC: connect-statuses
+    
 volumes:
   db_data:
   
+networks:
+  tutorial:
