@@ -45,7 +45,6 @@ services:
     networks:
       - tutorial
     environment:
-      #MARIADB_DATABASE: testdb
       MYSQL_USER: foo
       MYSQL_PASSWORD: bar
       MYSQL_ROOT_PASSWORD: foobar
